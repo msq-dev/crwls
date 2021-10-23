@@ -1,20 +1,21 @@
 import os
 from pathlib import Path
-import configparser
+from configparser import ConfigParser, ExtendedInterpolation
 
 config_dir = Path(__file__).parent.resolve()
 config_ini = Path(config_dir) / "config.ini"
 
-config = configparser.ConfigParser()
+config = ConfigParser(interpolation=ExtendedInterpolation())
 config.read(config_ini)
 
 environments = {
     "/Users/bmpotatoe": "DEV"
 }
 
-COLUMNS = config["DEFAULT"]["columns"]
+COLUMNS = config["DEV"]["columns"]
 MAIL_MODE = config["DEFAULT"].getboolean("mailmode")
-ENV = environments[os.environ["HOME"]]
+# ENV = environments[os.environ["HOME"]]
+ENV = Path.home()
 
 APP = config[ENV]["app"]
 URLS_LIST = config[ENV]["urlslist"]
